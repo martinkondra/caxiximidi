@@ -1,4 +1,4 @@
-int digitalSmooth(int rawIn, int *sensSmoothArray){
+int digitalSmooth(int rawIn, int *sensSmoothArray) {
   int j, k, temp, top, bottom;
   long total;
   static int i;
@@ -34,14 +34,14 @@ int digitalSmooth(int rawIn, int *sensSmoothArray){
   return total / k;
 }
 
-void setCircularBuffer(){
+void setCircularBuffer() {
   smoothAccelX = digitalSmooth(SensorRead[SENSOR_ACCEL_X], accelXSmooth);
   smoothAccelY = digitalSmooth(SensorRead[SENSOR_ACCEL_Y], accelYSmooth);
   accelXBuffer.addValue(smoothAccelX);
   accelYBuffer.addValue(smoothAccelY);
 }
 
-boolean isBufferReady(){
+boolean isBufferReady() {
   if(accelXBuffer.getCount() < BUFFER_SIZE
   || accelYBuffer.getCount() < BUFFER_SIZE){
     return false;
@@ -51,8 +51,7 @@ boolean isBufferReady(){
   }
 }
 
-void setSlopeStill()
-{
+void setSlopeStill() {
   if(abs(currentAccelX - accelXBuffer.getPreviousElement(8)) < SLOPE_STILL_X_RANGE
   && abs(currentAccelY - accelYBuffer.getPreviousElement(8)) < SLOPE_STILL_Y_RANGE){
     slopeStill = SLOPE_STILL_STATUS; 
@@ -61,8 +60,7 @@ void setSlopeStill()
   }
 }
 
-void setAccelXForce()
-{
+void setAccelXForce() {
   if(currentAccelX > FORCE_THRESHOLD_FORWARD || currentAccelY > NOTE_THRESHOLD_HIT){
     accelXForce = FORCE_FORWARD;
   }
@@ -74,8 +72,7 @@ void setAccelXForce()
   }
 }
   
-void setState()
-{
+void setState() {
   if(slopeStill == SLOPE_STILL_STATUS && accelXForce == FORCE_STILL){
     state = STATE_STILL;
   }else if(slopeStill == SLOPE_MOVING_STATUS && accelXForce == FORCE_FORWARD){
@@ -87,8 +84,7 @@ void setState()
   }
 }
 
-boolean noteReleaseForward()
-{
+boolean noteReleaseForward() {
   if(currentAccelX < NoteRelease[NOTE_FORWARD]){
     return true;
   }else{
@@ -96,8 +92,7 @@ boolean noteReleaseForward()
   }
 }
 
-boolean noteReleaseBackward()
-{
+boolean noteReleaseBackward() {
   if(currentAccelX > NoteRelease[NOTE_BACKWARD]){
     return true;
   }else{
@@ -105,8 +100,7 @@ boolean noteReleaseBackward()
   }
 }
 
-boolean noteReleaseHit()
-{
+boolean noteReleaseHit() {
   if(currentAccelY < NoteRelease[NOTE_HIT]){
     return true;
   }else{
