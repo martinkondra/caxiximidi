@@ -1,3 +1,5 @@
+#include "debug.h"
+
 int digitalSmooth(int rawIn, int *sensSmoothArray) {
   int j, k, temp, top, bottom;
   long total;
@@ -128,6 +130,7 @@ void runCaxixi() {
   setAccelXForce();
   prevState = state;
   setState();
+  //debug();
   switch (noteOn) {
     case NOTE_FORWARD:
     if(noteReleaseForward()){
