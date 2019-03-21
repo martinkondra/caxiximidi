@@ -11,7 +11,7 @@ byte addresses[][6] = {"1Node","2Node"};
 bool role = roleSET;
 int inInt;
 
-#include "CaxixiConfig.h"
+#include "receiverConfig.h"
 #include "CxCircularBuffer.h"
 
 char inData[10];

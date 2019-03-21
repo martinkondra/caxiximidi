@@ -9,54 +9,6 @@ const int MIDI_CHANNEL = 1;
 // SAMPLER (Variables)
 #define SAMPLER_BUFFER_SIZE 400
 
-// SENSOR_BEGIN
-const int SENSOR_ACCEL_X = 0;
-const int SENSOR_ACCEL_Y = 1;
-const int SENSOR_ACCEL_Z = 2;
-const int SENSOR_GYRO_Y = 3;
-const int SENSOR_GYRO_X = 4;
-const int SENSOR_GYRO_Z = 5;
-
-// SmoothFilter Samples
-#define filterSamples 5
-#define BUFFER_SIZE 8
-
-///VARIALES SLOPE STATUS
-const int SLOPE_STILL_X_RANGE = 500;
-const int SLOPE_STILL_Y_RANGE = 500;
-
-//VARIALBES FORCE STATUS
-const int FORCE_THRESHOLD_FORWARD = 3000;
-const int FORCE_THRESHOLD_BACKWARD = -2000;
-const int FORCE_STILL_RANGE_FORWARD = 2000;
-const int FORCE_STILL_RANGE_BACKWARD = -1500;
-// THRESHOLD_HIT EJE Y
-const int NOTE_THRESHOLD_HIT = 2000;
-// RELEASE THRESHOLD
-const int NOTE_RELEASE_FORWARD = 1000;
-const int NOTE_RELEASE_BACKWARD = -1000;
-const int NOTE_RELEASE_HIT = 1000;
-
-// VARIABLES CAXIXI STATE MACHINE
-// STATE
-const int STATE_STILL = 0;
-const int STATE_FORWARD = 1;
-const int STATE_BACKWARD = 2;
-// FORCE
-const int FORCE_STILL = 0;
-const int FORCE_FORWARD = 1;
-const int FORCE_BACKWARD = 2;
-// SLOPE
-const int SLOPE_STILL_STATUS = 0;
-const int SLOPE_MOVING_STATUS = 1;
-
-const int NOTE_FORWARD = 0;
-const int NOTE_BACKWARD = 1;
-const int NOTE_HIT = 2;
-const int NOTE_OFF = 5;
-
-const int RESOLUTION = 1;
-
 ///MENSAJES INT via nRF24L01+
 const int CAXIXI_RIGHT_FORWARD_NOTEON = 111;
 const int CAXIXI_RIGHT_FORWARD_NOTEOFF = 110;
