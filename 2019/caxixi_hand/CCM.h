@@ -94,8 +94,7 @@ int formatCCM(int NUM, int CH) {
   return msg;
 }
 
-void processX()
-{
+void processX() {
   int x, controlvalueX;
   controlvalueX = abs(GyroXBuffer.getPreviousElement(1));
   if(controlvalueX>180){
@@ -105,8 +104,7 @@ void processX()
   delay(2);
 }
 
-void processY()
-{
+void processY() {
   int y, controlvalueY;
   controlvalueY = GyroYBuffer.getPreviousElement(1);      
   y = map(controlvalueY, -90, 90, 0, 127); 
@@ -114,8 +112,7 @@ void processY()
   delay(2);
 }
 
-void processZ()
-{
+void processZ() {
   int z, controlvalueZ;
   controlvalueZ = GyroZBuffer.getPreviousElement(1);
   z = map(controlvalueZ, -90, 90, 0, 127); 
