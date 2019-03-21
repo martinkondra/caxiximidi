@@ -1,7 +1,3 @@
-/**
- * 1. BUTTONS
- */
-
 // Sampler
 bool record = false;
 int recordButtonState = 0;    // current state of the button
@@ -25,43 +21,35 @@ int octaveDownButtonState = 0;
 int currentOctave = 0;
 
 
-void SendToReceiver(int msg) 
-{
+void SendToReceiver(int msg) {
   radio.write( &msg, sizeof(int));
 }
 
-void SendNoteOn(int note)
-{
+void SendNoteOn(int note) {
   SendToReceiver(note);
 }
 
-void SendNoteOff(int note)
-{
+void SendNoteOff(int note) {
   SendToReceiver(note);
 }
 
-void SendRecordStart()
-{
+void SendRecordStart() {
   SendToReceiver(CAXIXI_RECORD_START);
 }
 
-void SendRecordStop()
-{
+void SendRecordStop() {
   SendToReceiver(CAXIXI_RECORD_STOP);
 }
 
-void SendOctaveUp()
-{
+void SendOctaveUp() {
   SendToReceiver(CAXIXI_OCTAVE_UP);
 }
 
-void SendOctaveDown()
-{
+void SendOctaveDown(){
   SendToReceiver(CAXIXI_OCTAVE_DOWN);
 }
 
-void SendClear()
-{
+void SendClear() {
   SendToReceiver(CAXIXI_SAMPLER_CLEAR);
 }
 

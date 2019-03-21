@@ -1,8 +1,3 @@
-///////////////////
-// CCM functions //
-///////////////////
-
-//bool wantCCM = true;//para debug
 bool CCMbufferReady = false;
 CxCircularBuffer GyroXBuffer(BUFFER_SIZE);
 CxCircularBuffer GyroYBuffer(BUFFER_SIZE);
@@ -132,12 +127,12 @@ void processZ()
 void ccmNotes() {
   if (currentAccelY > NoteThresholdCCM & (!Bloqueo)){
     if (NoteState){
-       SendToReceiver(CAXIXI_RIGHT_HIT_NOTEON);
+       SendToReceiver(CAXIXI_HIT_NOTEON);
        NoteState = false;
        Bloqueo = true;
        }
     else{
-      SendToReceiver(CAXIXI_RIGHT_HIT_NOTEOFF);
+      SendToReceiver(CAXIXI_HIT_NOTEOFF);
       NoteState = true;
       Bloqueo = true;
       }

@@ -1,13 +1,7 @@
-//////////////////////////////////////////////////////////////////////////
-/*/////////CHEQUEAR PINES DE NRF24L01+ Y DE LOS PINES DE LOS BOTONES////*/
-//////////////////////////////////////////////////////////////////////////
-
 #include <MS561101BA.h>
 #include <I2Cdev.h>
 #include <MPU60X0.h>
 #include <EEPROM.h>
-
-//#define DEBUG
 #include "DebugUtils.h"
 #include "FreeIMU.h"
 #include <Wire.h>
@@ -19,17 +13,13 @@
 #include <avr/power.h> // For proMini Boards
 int powerpin = 5;
 
-/*
- * CAXIXI NRF24 CONFIG
- */
+//CAXIXI NRF24 CONFIG
 int roleSET = 1; //Set the Role 0 receiver or 1 sender right or 2 sender left
 int radioNumber = roleSET;
 RF24 radio(9,10); //Hardware configuration: Set up nRF24L01 radio on SPI bus plus pins 7 & 8 */
 
 byte addresses[][6] = {"1Node","2Node"};
-// Used to control whether this node is sending or receiving
-bool role = roleSET;
-
+bool role = roleSET; // Used to control whether this node is sending or receiving
 
 boolean isUpThreshold, isDownThreshold, isUpThresholdRotated, isDownThresholdRotated;
 boolean canHit, canHitRotated;
@@ -75,10 +65,13 @@ FreeIMU my3IMU = FreeIMU();
 
 void setup() {
   analogWrite(13,150);
-  //pinMode(OCTAVE_UP_BUTTON_PIN, INPUT);// initialize the button pin as a input:
-  pinMode(OCTAVE_DOWN_BUTTON_PIN, INPUT);
-  //pinMode(SAMPLER_BUTTON_RECORD_PIN, INPUT);
-  pinMode(SAMPLER_BUTTON_CLEAR_PIN, INPUT);
+  if(caxixiRight){
+    pinMode(OCTAVE_UP_BUTTON_PIN, INPUT);// initialize the button pin as a input:
+    pinMode(SAMPLER_BUTTON_RECORD_PIN, INPUT);
+  } else {
+    pinMode(OCTAVE_DOWN_BUTTON_PIN, INPUT);
+    pinMode(SAMPLER_BUTTON_CLEAR_PIN, INPUT);
+  }
   //Serial.begin(9600);
    radio.begin();
   // Set the PA Level low to prevent power supply related issues since this is a
