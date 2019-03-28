@@ -15,4 +15,8 @@ CCM mode: las dos luces de octava en rojo
 5) Bug en el CCM: Funciona como el orto
 -Además, buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
 
-6) Nuevas grabaciones: Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos 
+6) Nuevas grabaciones: Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos
+
+7) Generar gráficos automáticamente con matplotlib
+
+8) ClearAll & ClearLayer
