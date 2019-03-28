@@ -157,26 +157,26 @@ void SendNoteOff(int note) {
   }
 }
 
-void sendMIDIccm(byte channel, byte control, byte value){//ch=controller num=value
-      midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
-      MidiUSB.sendMIDI(event);
-      MidiUSB.flush();
-    }
+void sendMIDIccm(byte channel, byte control, byte value) { //ch=controller num=value
+  midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
+  MidiUSB.sendMIDI(event);
+  MidiUSB.flush();
+}
 
-void SplitCCM(int inInt){
-    ch = inInt/1000;
-    num = inInt - ch*1000;
+void SplitCCM(int inInt) {
+  ch = inInt/1000;
+  num = inInt - ch*1000;
 }
 
 void PlayBuffer() {
   if(play){
-    if(samples[bufferJ].time==time){//Esto es un hardcodeo (el -100), corregirlo mirando el reloj en la V2, o dejarlo...
+    if(samples[bufferJ].time==time){
       if(samples[bufferJ].encendido){
        noteOn(MIDI_CHANNEL,samples[bufferJ].note,127);
       }else{
        noteOff(MIDI_CHANNEL,samples[bufferJ].note,127);
       }
-      bufferJ++; //J se reinicia cuando da la vuelta, en la fc setReset 
+      bufferJ++; //J se reinicia cuando da la vuelta readClock() 
     }
   }
 }
