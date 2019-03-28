@@ -135,7 +135,7 @@ void noteOff(byte channel, byte pitch, byte velocity) {
 void SendNoteOn(int note) {
   note = note + (currentOctave * 12);
   if(record && bufferI<SAMPLER_BUFFER_SIZE/2) {
-    time = ppqn;
+    time = fixTime(ppqn, grid);
     Buffer sample = {note, layer, 1, time};
     samples[bufferI] = sample;
   }
