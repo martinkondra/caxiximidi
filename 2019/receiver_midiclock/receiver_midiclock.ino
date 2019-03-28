@@ -15,10 +15,6 @@ int inInt;
 #include "receiverConfig.h"
 #include "CxCircularBuffer.h"
 
-char inData[10];
-int index;
-boolean started = false;
-boolean ended = false;
 int ch;
 int num;
 
