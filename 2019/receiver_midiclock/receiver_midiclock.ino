@@ -62,17 +62,24 @@ void setup() {
 }
 
 void loop() {
-  time = readClock();
+  debug();
   PlayBuffer();
+  readClock();
   showLeds();
   receiveRadio();
-  debug();
 }
 
-void debug() {
-  Serial.print(time);
+void debug() { //FIX ME
+  //String debugMsg = "\t";
+  //debugMsg += time;
+  //debugMsg += debugMsg;
+  //debugMsg += samples[bufferPlay].time;
+  //Serial.println(debugMsg);
+  Serial.print(ppqn);
   Serial.print('\t');
-  Serial.println(samples[bufferPlay].time);
+  Serial.print(samples[bufferPlay].time);
+  Serial.print('\t');
+  Serial.println(bufferPlay);
 }
 
 void receiveRadio() {
@@ -119,24 +126,13 @@ void receiveRadio() {
   }
 }
 
-void noteOn(byte channel, byte pitch, byte velocity) {
-  midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
-  MidiUSB.sendMIDI(noteOn);
-  MidiUSB.flush();
-}
-
-void noteOff(byte channel, byte pitch, byte velocity) {
-  midiEventPacket_t noteOff = {0x08, 0x80 | channel, pitch, velocity};
-  MidiUSB.sendMIDI(noteOff);
-  MidiUSB.flush();
-}
-
 //Probar estos cambios para que deje de grabar cuando completa el buffer!
 void SendNoteOn(int note) {
   note = note + (currentOctave * 12);
   if(record && bufferRec<SAMPLER_BUFFER_SIZE/2) {
-    time = fixTime(ppqn, grid);
-    Buffer sample = {note, layer, 1, time};
+    int fixed;
+    fixed = fixTime(ppqn, grid);
+    Buffer sample = {note, layer, 1, fixed};
     samples[bufferRec] = sample;
   }
   noteOn(MIDI_CHANNEL,note,127);
@@ -148,7 +144,7 @@ void SendNoteOn(int note) {
 void SendNoteOff(int note) {
   note = note + (currentOctave * 12);
   if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
-    Buffer sample = {note, layer, 0, time};
+    Buffer sample = {note, layer, 0, ppqn};
     samples[bufferRec] = sample;
   }
   noteOff(MIDI_CHANNEL,note,127);
@@ -170,7 +166,7 @@ void SplitCCM(int inInt) {
 
 void PlayBuffer() {
   if(play){
-    if(samples[bufferPlay].time==time){
+    if(samples[bufferPlay].time==ppqn){
       if(samples[bufferPlay].encendido){
        noteOn(MIDI_CHANNEL,samples[bufferPlay].note,127);
       }else{

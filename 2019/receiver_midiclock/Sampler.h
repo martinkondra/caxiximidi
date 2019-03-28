@@ -7,7 +7,7 @@ int bufferRec=0; //indice del buffer para record
 int bufferPlay=0; //indice del buffer para play
 int layer = 0;
 bool record = false;
-bool play = false;
+bool play = true;
 int time = 0;
 
 void bubbleSort(Buffer a[], int bufferRec) {
@@ -114,6 +114,30 @@ void Clear() {
   int bufferPlay=0; //indice del buffer para play
 }
 
+void noteOn(byte channel, byte pitch, byte velocity) {
+  midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
+  MidiUSB.sendMIDI(noteOn);
+  MidiUSB.flush();
+}
+
+void noteOff(byte channel, byte pitch, byte velocity) {
+  midiEventPacket_t noteOff = {0x08, 0x80 | channel, pitch, velocity};
+  MidiUSB.sendMIDI(noteOff);
+  MidiUSB.flush();
+}
+
+void playFirstNote() {
+  if(play){
+    if(samples[0].time==0){
+      if(samples[bufferPlay].encendido){
+        noteOn(MIDI_CHANNEL,samples[0].note,127);
+      }else{
+        noteOff(MIDI_CHANNEL,samples[0].note,127);
+      }
+      bufferPlay++; //J se reinicia cuando da la vuelta readClock() 
+    }
+  }
+}
 int readClock() {
   // agregar una variable len_sample que indique cada cuánto dar la vuelta
   // comienza siendo 24
@@ -132,6 +156,7 @@ int readClock() {
     //Clock start byte
     else if(rx.byte1 == 0xFA){
       ppqn = 0;
+      playFirstNote();
     }
     //Clock stop byte
     else if(rx.byte1 == 0xFC){
