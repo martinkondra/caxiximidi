@@ -58,7 +58,7 @@ void setup() {
     radio.startListening(); 
   }
   delay(100);
-  //makeRecord();
+  makeRecord();
 }
 
 void loop() {
@@ -69,7 +69,7 @@ void loop() {
   debug();
 }
 
-void debug() { //crear una string con todo el debug y mandarlo de una
+void debug() {
   Serial.print(time);
   Serial.print('\t');
   Serial.println(samples[bufferPlay].time);
