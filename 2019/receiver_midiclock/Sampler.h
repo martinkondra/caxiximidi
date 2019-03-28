@@ -3,16 +3,16 @@ int grid = 12; //24= negra, 12=corchea
 int ppqn = 0;
 
 Buffer samples[SAMPLER_BUFFER_SIZE]; //puede almacenar hasta 50 notas (50 on, 50 off)
-int bufferI=0; //indice del buffer para record
-int bufferJ=0; //indice del buffer para play
+int bufferRec=0; //indice del buffer para record
+int bufferPlay=0; //indice del buffer para play
 int layer = 0;
 bool record = false;
 bool play = false;
 int time = 0;
 
-void bubbleSort(Buffer a[], int bufferI) {
-  for(int k=0; k<=bufferI; k++) {
-    for(int o=0; o<(bufferI-(k+1)); o++) {
+void bubbleSort(Buffer a[], int bufferRec) {
+  for(int k=0; k<=bufferRec; k++) {
+    for(int o=0; o<(bufferRec-(k+1)); o++) {
       if(a[o].time > a[o+1].time) {
         Buffer t = a[o];
         a[o] = a[o+1];
@@ -83,19 +83,21 @@ void makeRecord() { //cargo las notas en el buffer, for test purposes
 }
 
 void RecordStart() {
+  // len_sample = -1
   digitalWrite(RECORD_LED_PIN, LOW);
   record=true;
   layer = layer + 1;
 }
 
 void RecordStop() {
+  // len_sample es el pulso siguiente: fixNote(ppqn, 24)
   analogWrite(RECORD_LED_PIN, HIGH);
   record=false;
 }
 
-void Clear_Buffer(Buffer a[], int bufferI) {
-  for(int k=0; k<=bufferI; k++) {
-    for(int o=0; o<(bufferI-(k+1)); o++) {
+void Clear_Buffer(Buffer a[], int bufferRec) {
+  for(int k=0; k<=bufferRec; k++) {
+    for(int o=0; o<(bufferRec-(k+1)); o++) {
       samples[k] = Buffer_default;
     }
   }
@@ -104,16 +106,18 @@ void Clear_Buffer(Buffer a[], int bufferI) {
 void Clear() {
   bool record = false;
   bool play = false;
+  // len_sample es igual a 24
+  // ppqn es igual al resto de dividir por 24
   
-  Clear_Buffer(samples,bufferI);
-  int bufferI=0; //indice del buffer para record
-  int bufferJ=0; //indice del buffer para play
+  Clear_Buffer(samples,bufferRec);
+  int bufferRec=0; //indice del buffer para record
+  int bufferPlay=0; //indice del buffer para play
 }
 
 int readClock() {
   // agregar una variable len_sample que indique cada cuánto dar la vuelta
   // comienza siendo 24
-  // cuando pongo a grabar es "infinito" (decidir cuántos compaces es el máximo, *24)
+  // cuando pongo a grabar es "infinito" (-1)
   // cuando pongo play es el valor en el que se quedo ppqn fixeado con grid en 24
   midiEventPacket_t rx;
   do {
@@ -122,7 +126,7 @@ int readClock() {
        ++ppqn;
        if(ppqn == len_sample){    
           ppqn = 0;
-          bufferJ=0;
+          bufferPlay=0;
        };
     }
     //Clock start byte
@@ -131,7 +135,7 @@ int readClock() {
     }
     //Clock stop byte
     else if(rx.byte1 == 0xFC){
-      bufferJ = 0;
+      bufferPlay = 0;
     };
   } while (rx.header != 0);
   return ppqn; 

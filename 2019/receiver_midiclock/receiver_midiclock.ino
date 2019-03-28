@@ -58,7 +58,7 @@ void setup() {
     radio.startListening(); 
   }
   delay(100);
-  makeRecord();
+  //makeRecord();
 }
 
 void loop() {
@@ -72,7 +72,7 @@ void loop() {
 void debug() { //crear una string con todo el debug y mandarlo de una
   Serial.print(time);
   Serial.print('\t');
-  Serial.println(samples[bufferJ].time);
+  Serial.println(samples[bufferPlay].time);
 }
 
 void receiveRadio() {
@@ -134,26 +134,26 @@ void noteOff(byte channel, byte pitch, byte velocity) {
 //Probar estos cambios para que deje de grabar cuando completa el buffer!
 void SendNoteOn(int note) {
   note = note + (currentOctave * 12);
-  if(record && bufferI<SAMPLER_BUFFER_SIZE/2) {
+  if(record && bufferRec<SAMPLER_BUFFER_SIZE/2) {
     time = fixTime(ppqn, grid);
     Buffer sample = {note, layer, 1, time};
-    samples[bufferI] = sample;
+    samples[bufferRec] = sample;
   }
   noteOn(MIDI_CHANNEL,note,127);
-  if(record && bufferI<SAMPLER_BUFFER_SIZE/2){
-    bufferI++;  
+  if(record && bufferRec<SAMPLER_BUFFER_SIZE/2){
+    bufferRec++;  
   }
 }
 
 void SendNoteOff(int note) {
   note = note + (currentOctave * 12);
-  if(record && bufferI<=SAMPLER_BUFFER_SIZE/2){
+  if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
     Buffer sample = {note, layer, 0, time};
-    samples[bufferI] = sample;
+    samples[bufferRec] = sample;
   }
   noteOff(MIDI_CHANNEL,note,127);
-  if(record && bufferI<=SAMPLER_BUFFER_SIZE/2){
-    bufferI++;  
+  if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
+    bufferRec++;  
   }
 }
 
@@ -170,13 +170,13 @@ void SplitCCM(int inInt) {
 
 void PlayBuffer() {
   if(play){
-    if(samples[bufferJ].time==time){
-      if(samples[bufferJ].encendido){
-       noteOn(MIDI_CHANNEL,samples[bufferJ].note,127);
+    if(samples[bufferPlay].time==time){
+      if(samples[bufferPlay].encendido){
+       noteOn(MIDI_CHANNEL,samples[bufferPlay].note,127);
       }else{
-       noteOff(MIDI_CHANNEL,samples[bufferJ].note,127);
+       noteOff(MIDI_CHANNEL,samples[bufferPlay].note,127);
       }
-      bufferJ++; //J se reinicia cuando da la vuelta readClock() 
+      bufferPlay++; //J se reinicia cuando da la vuelta readClock() 
     }
   }
 }
