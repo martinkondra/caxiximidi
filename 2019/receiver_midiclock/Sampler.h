@@ -94,11 +94,11 @@ void RecordStop() {
 }
 
 void Clear_Buffer(Buffer a[], int bufferI) {
-    for(int k=0; k<=bufferI; k++) {
-        for(int o=0; o<(bufferI-(k+1)); o++) {
-                    samples[k] = Buffer_default;
-        }
+  for(int k=0; k<=bufferI; k++) {
+    for(int o=0; o<(bufferI-(k+1)); o++) {
+      samples[k] = Buffer_default;
     }
+  }
 }
 
 void Clear() {
@@ -111,7 +111,7 @@ void Clear() {
 }
 
 int readClock() {
-  // agregar una variables len_sample que indique cada cuánto dar la vuelta
+  // agregar una variable len_sample que indique cada cuánto dar la vuelta
   // comienza siendo 24
   // cuando pongo a grabar es "infinito" (decidir cuántos compaces es el máximo, *24)
   // cuando pongo play es el valor en el que se quedo ppqn fixeado con grid en 24
@@ -128,11 +128,9 @@ int readClock() {
     //Clock start byte
     else if(rx.byte1 == 0xFA){
       ppqn = 0;
-      //bufferJ = 0; //posiblemente no sea necesario ya que vengo de un stop
     }
     //Clock stop byte
     else if(rx.byte1 == 0xFC){
-      //ppqn = 0;
       bufferJ = 0;
     };
   } while (rx.header != 0);
