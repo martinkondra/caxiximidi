@@ -125,14 +125,16 @@ void receiveRadio() {
 //Probar estos cambios para que deje de grabar cuando completa el buffer!
 void SendNoteOn(int note) {
   note = note + (currentOctave * 12);
-  if(record && bufferRec<SAMPLER_BUFFER_SIZE/2) {
+  //if(record && bufferRec<SAMPLER_BUFFER_SIZE/2) {
+  if(record) {
     int fixed;
     fixed = fixTime(ppqn, grid);
     Buffer sample = {note, layer, 1, fixed};
     samples[bufferRec] = sample;
   }
   noteOn(MIDI_CHANNEL,note,127);
-  if(record && bufferRec<SAMPLER_BUFFER_SIZE/2){
+  //if(record && bufferRec<SAMPLER_BUFFER_SIZE/2){
+  if(record){
     bufferRec++;  
   }
 }
