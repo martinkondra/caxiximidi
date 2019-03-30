@@ -7,7 +7,7 @@ int bufferRec=0;
 int bufferPlay=0;
 int layer = 0;
 bool record = false;
-bool play = true;
+bool play = false;
 int time = 0;
 
 void bubbleSort(Buffer a[], int bufferRec) {
@@ -93,6 +93,7 @@ void RecordStop() {
   // len_sample es el pulso siguiente: fixNote(ppqn, 24)
   analogWrite(RECORD_LED_PIN, HIGH);
   record=false;
+  play=true;
 }
 
 void Clear_Buffer(Buffer a[], int bufferRec) {

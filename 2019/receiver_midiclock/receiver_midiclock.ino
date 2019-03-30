@@ -54,7 +54,7 @@ void setup() {
     radio.startListening(); 
   }
   delay(100);
-  makeRecord();
+  //makeRecord();
 }
 
 void loop() {
@@ -75,7 +75,7 @@ void debug() { //FIX ME
   Serial.print('\t');
   Serial.print(samples[bufferPlay].time);
   Serial.print('\t');
-  Serial.println(bufferPlay);
+  Serial.print(bufferPlay);
 }
 
 void receiveRadio() {
@@ -125,7 +125,7 @@ void receiveRadio() {
 //Probar estos cambios para que deje de grabar cuando completa el buffer!
 void SendNoteOn(int note) {
   note = note + (currentOctave * 12);
-  //if(record && bufferRec<SAMPLER_BUFFER_SIZE/2) {
+  //if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2))
   if(record) {
     int fixed;
     fixed = fixTime(ppqn, grid);
@@ -133,7 +133,7 @@ void SendNoteOn(int note) {
     samples[bufferRec] = sample;
   }
   noteOn(MIDI_CHANNEL,note,127);
-  //if(record && bufferRec<SAMPLER_BUFFER_SIZE/2){
+  //if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2))
   if(record){
     bufferRec++;  
   }
@@ -141,13 +141,13 @@ void SendNoteOn(int note) {
 
 void SendNoteOff(int note) {
   note = note + (currentOctave * 12);
-  //if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
+  //if((record) && (bufferRec<=SAMPLER_BUFFER_SIZE/2))
   if (record) {
     Buffer sample = {note, layer, 0, ppqn};
     samples[bufferRec] = sample;
   }
   noteOff(MIDI_CHANNEL,note,127);
-  //if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
+  //if((record) && (bufferRec<=SAMPLER_BUFFER_SIZE/2)) {
   if (record) {
     bufferRec++;  
   }
