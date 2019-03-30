@@ -2,9 +2,9 @@ int len_sample = 96; // 1 compas
 int grid = 12; //24= negra, 12=corchea
 int ppqn = 0;
 
-Buffer samples[SAMPLER_BUFFER_SIZE]; //puede almacenar hasta 50 notas (50 on, 50 off)
-int bufferRec=0; //indice del buffer para record
-int bufferPlay=0; //indice del buffer para play
+Buffer samples[SAMPLER_BUFFER_SIZE] //puede almacenar hasta 50 notas (50 on, 50 off)
+int bufferRec=0;
+int bufferPlay=0;
 int layer = 0;
 bool record = false;
 bool play = true;
@@ -97,7 +97,19 @@ void RecordStop() {
 
 void Clear_Buffer(Buffer a[], int bufferRec) {
   for(int k=0; k<=bufferRec; k++) {
-    for(int o=0; o<(bufferRec-(k+1)); o++) {
+    for(int o=0; o<(bufferRec-(k+1)); o++) { // este segundo loop sobra?
+      samples[k] = Buffer_default;
+    }
+  }
+}
+
+// Work in process
+// Pensar consecuencias para la reproducción si borro una capa
+// bufferPlay debería también estar organizado en layers
+// o quizás hacerlo cuando termina el loop
+void Clear_Layer(Buffer a[], int bufferRec) {
+  for(int k=0; k<=bufferRec; k++) {
+    if (samples[k].layer==layer) {
       samples[k] = Buffer_default;
     }
   }
@@ -110,8 +122,8 @@ void Clear() {
   // ppqn es igual al resto de dividir por 24
   
   Clear_Buffer(samples,bufferRec);
-  int bufferRec=0; //indice del buffer para record
-  int bufferPlay=0; //indice del buffer para play
+  int bufferRec=0;
+  int bufferPlay=0;
 }
 
 void noteOn(byte channel, byte pitch, byte velocity) {
@@ -134,7 +146,7 @@ void playFirstNote() {
       }else{
         noteOff(MIDI_CHANNEL,samples[0].note,127);
       }
-      bufferPlay++; //J se reinicia cuando da la vuelta readClock() 
+      bufferPlay++;
     }
   }
 }
