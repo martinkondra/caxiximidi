@@ -2,7 +2,7 @@ int len_sample = 96; // 1 compas
 int grid = 12; //24= negra, 12=corchea
 int ppqn = 0;
 
-Buffer samples[SAMPLER_BUFFER_SIZE] //puede almacenar hasta 50 notas (50 on, 50 off)
+Buffer samples[SAMPLER_BUFFER_SIZE];
 int bufferRec=0;
 int bufferPlay=0;
 int layer = 0;
