@@ -141,12 +141,14 @@ void SendNoteOn(int note) {
 
 void SendNoteOff(int note) {
   note = note + (currentOctave * 12);
-  if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
+  //if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
+  if (record) {
     Buffer sample = {note, layer, 0, ppqn};
     samples[bufferRec] = sample;
   }
   noteOff(MIDI_CHANNEL,note,127);
-  if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
+  //if(record && bufferRec<=SAMPLER_BUFFER_SIZE/2){
+  if (record) {
     bufferRec++;  
   }
 }
