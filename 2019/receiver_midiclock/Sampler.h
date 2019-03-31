@@ -164,6 +164,7 @@ int readClock() {
        if(ppqn == len_sample){    
           ppqn = 0;
           bufferPlay=0;
+          bubbleSort(samples,bufferRec);
        };
     }
     //Clock start byte
@@ -174,6 +175,7 @@ int readClock() {
     //Clock stop byte
     else if(rx.byte1 == 0xFC){
       bufferPlay = 0;
+      bubbleSort(samples,bufferRec);
     };
   } while (rx.header != 0);
   return ppqn; 
