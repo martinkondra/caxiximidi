@@ -76,12 +76,13 @@ void debug() { //FIX ME
   Serial.print('\t');
   Serial.print(samples[bufferPlay].time);
   Serial.print('\t');
-  Serial.print(bufferPlay);
+  Serial.println(bufferPlay);
 }
 
 void receiveRadio() {
   if(radio.available()) {
-    radio.read( &inInt, sizeof(int) ); 
+    radio.read( &inInt, sizeof(int) );
+    Serial.println(inInt);
     if (inInt>999) {  //CCMessagge
       SplitCCM(inInt);
       sendMIDIccm(MIDI_CHANNEL, ch, num);
@@ -126,16 +127,17 @@ void receiveRadio() {
 //Probar estos cambios para que deje de grabar cuando completa el buffer!
 void SendNoteOn(int note) {
   note = note + (currentOctave * 12);
-  //if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2))
-  if(record) {
+  if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2)) {
     int fixed;
     fixed = fixTime(ppqn, grid);
     Buffer sample = {note, layer, 1, fixed};
     samples[bufferRec] = sample;
+    bufferRec++;
+    Buffer sampleOff = {note, layer, 0, fixed+6}; //Estoy hardcodeando el noteOff una semi después del on
+    samples[bufferRec] = sampleOff;
   }
   noteOn(MIDI_CHANNEL,note,127);
-  //if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2))
-  if(record){
+  if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2)) {
     bufferRec++;  
   }
 }
@@ -143,15 +145,13 @@ void SendNoteOn(int note) {
 void SendNoteOff(int note) {
   note = note + (currentOctave * 12);
   //if((record) && (bufferRec<=SAMPLER_BUFFER_SIZE/2))
-  if (record) {
-    Buffer sample = {note, layer, 0, ppqn};
-    samples[bufferRec] = sample;
-  }
+  //  Buffer sample = {note, layer, 0, ppqn};
+  //  samples[bufferRec] = sample;
+  //}
   noteOff(MIDI_CHANNEL,note,127);
   //if((record) && (bufferRec<=SAMPLER_BUFFER_SIZE/2)) {
-  if (record) {
-    bufferRec++;  
-  }
+  //  bufferRec++;  
+  //}
 }
 
 void sendMIDIccm(byte channel, byte control, byte value) { //ch=controller num=value

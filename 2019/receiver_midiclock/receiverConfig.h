@@ -41,7 +41,7 @@ struct Buffer_s {
   int note;
   int layer;  //capa de sobregrabación. cada vez que se prende "record", suma 1.
   bool encendido;// on/off
-  int time;
+  long time;
 } Buffer_default = {0,0,0,999999};
 
 typedef struct Buffer_s Buffer;

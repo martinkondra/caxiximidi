@@ -1,5 +1,5 @@
 int len_sample = 96; // 1 compas
-int grid = 12; //24= negra, 12=corchea
+int grid = 6; //24= negra, 12=corchea
 int ppqn = 0;
 
 Buffer samples[SAMPLER_BUFFER_SIZE];
@@ -8,7 +8,6 @@ int bufferPlay=0;
 int layer = 0;
 bool record = false;
 bool play = false;
-int time = 0;
 
 void bubbleSort(Buffer a[], int bufferRec) {
   for(int k=0; k<=bufferRec; k++) {
@@ -91,7 +90,7 @@ void RecordStart() {
 
 void RecordStop() {
   // len_sample es el pulso siguiente: fixNote(ppqn, 24)
-  analogWrite(RECORD_LED_PIN, HIGH);
+  digitalWrite(RECORD_LED_PIN, HIGH);
   record=false;
   play=true;
 }
