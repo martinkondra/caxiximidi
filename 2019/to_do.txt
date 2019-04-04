@@ -4,18 +4,11 @@ Proyectos a realizar
 Encendido: las dos luces de octava en verde (octava 0), luz de rec apagada
 CCM mode: las dos luces de octava en rojo
 
-2) Ordenar receiver y separar en varios archivos para facilitar lectura y desarrollo
-
-3) Bug en el sample:
--Se rompe cuando alcanza el tamaño máximo del buffer.
--Agrandar el buffer (buscar el límite) y hacer que no se rompa cuando lo complete
-
-4) Quantizer: Acomodar las notas a tempo usando midi clock
-
 5) Bug en el CCM: Funciona como el orto
 -Además, buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
 
-6) Nuevas grabaciones: Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos
+6) Nuevas grabaciones: Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos.
+Falta grabar los hits y decidir qué variables son de interés
 
 7) Generar gráficos automáticamente con matplotlib
 
