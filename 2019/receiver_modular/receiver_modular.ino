@@ -125,15 +125,14 @@ void SendNoteOn(int note) {
   if(record && !isSetT0 && FirstNote){
     FirstNote = true;
     setT0();
-  //if(record && bufferI<SAMPLER_BUFFER_SIZE/2)
-    if(record) {
+  }
+  if((record) && (bufferI<SAMPLER_BUFFER_SIZE/2)) {
     time = millis()-(t0 + t1 + reset);  //Esto es para que a la primera nota la guarde con time == 0
     Buffer sample = {note, layer, 1, time};
     samples[bufferI] = sample;
   }
   noteOn(MIDI_CHANNEL,note,127);
-  //if(record && bufferI<SAMPLER_BUFFER_SIZE/2){
-  if(record) {
+  if((record) && (bufferI<SAMPLER_BUFFER_SIZE/2)) {
     bufferI++;  
   }
 }
