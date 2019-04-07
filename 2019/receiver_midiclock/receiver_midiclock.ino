@@ -6,11 +6,9 @@
 
 int roleSET = 0;
 bool radioNumber = roleSET;
-/* Hardware configuration: Set up nRF24L01 radio on SPI bus plus pins 7 & 8 */
 RF24 radio(5,6);
 byte addresses[][6] = {"1Node","2Node"};
-// Used to control whether this node is sending or receiving
-bool role = roleSET;
+bool role = roleSET; // Used to control whether this node is sending or receiving
 int inInt;
 
 #include "receiverConfig.h"
@@ -41,11 +39,11 @@ void setup() {
   analogWrite(OCTAVE_UP_LED_RED_PIN, 255);
   analogWrite(OCTAVE_UP_LED_GREEN_PIN, 255);
   analogWrite(RECORD_LED_PIN, 255);
-  delay(500);
+  delay(100);
   Serial.begin(9600); 
   delay(100);
   initSamplerBuffer();
-  delay(1000);
+  delay(100);
   radio.begin();
   radio.setPALevel(RF24_PA_LOW);
   if(radioNumber){
@@ -55,7 +53,6 @@ void setup() {
     radio.startListening(); 
   }
   delay(100);
-  //makeRecord();
 }
 
 void loop() {
@@ -66,12 +63,7 @@ void loop() {
   receiveRadio();
 }
 
-void debug() { //FIX ME
-  //String debugMsg = "\t";
-  //debugMsg += time;
-  //debugMsg += debugMsg;
-  //debugMsg += samples[bufferPlay].time;
-  //Serial.println(debugMsg);
+void debug() {
   Serial.print(ppqn);
   Serial.print('\t');
   Serial.print(samples[bufferPlay].time);
@@ -82,7 +74,6 @@ void debug() { //FIX ME
 void receiveRadio() {
   if(radio.available()) {
     radio.read( &inInt, sizeof(int) );
-    Serial.println(inInt);
     if (inInt>999) {  //CCMessagge
       SplitCCM(inInt);
       sendMIDIccm(MIDI_CHANNEL, ch, num);
@@ -124,10 +115,13 @@ void receiveRadio() {
   }
 }
 
-//Probar estos cambios para que deje de grabar cuando completa el buffer!
 void SendNoteOn(int note) {
   note = note + (currentOctave * 12);
-  if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2)) {
+  if((record) && (!firstNote)){
+    firstNote = true;
+    len_sample = -1;
+  }
+  if((record) && (bufferRec<SAMPLER_BUFFER_SIZE)) {
     int fixed;
     fixed = fixTime(ppqn, grid);
     Buffer sample = {note, layer, 1, fixed};
@@ -135,11 +129,9 @@ void SendNoteOn(int note) {
     bufferRec++;
     Buffer sampleOff = {note, layer, 0, fixed+6}; //Estoy hardcodeando el noteOff una semi después del on
     samples[bufferRec] = sampleOff;
+    bufferRec++;
   }
   noteOn(MIDI_CHANNEL,note,127);
-  if((record) && (bufferRec<SAMPLER_BUFFER_SIZE/2)) {
-    bufferRec++;  
-  }
 }
 
 void SendNoteOff(int note) {
