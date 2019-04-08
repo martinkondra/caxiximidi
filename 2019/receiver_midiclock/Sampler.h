@@ -10,16 +10,23 @@ bool record = false;
 bool play = false;
 bool firstNote = false;
 bool setT1 = false;
+bool need_bubble = false;
 
+// Performance: Hacer un flag para ver cuando es necesario hacer el bubble sort
+// bool need_bubble = false;
+// pasa a true cuando se agregan notas al buffer
 void bubbleSort(Buffer a[], int bufferRec) {
-  for(int k=0; k<=bufferRec; k++) {
-    for(int o=0; o<(bufferRec-(k+1)); o++) {
-      if(a[o].time > a[o+1].time) {
-        Buffer t = a[o];
-        a[o] = a[o+1];
-        a[o+1] = t;
+  if (need_bubble) {
+    for(int k=0; k<=bufferRec; k++) {
+      for(int o=0; o<(bufferRec-(k+1)); o++) {
+        if(a[o].time > a[o+1].time) {
+          Buffer t = a[o];
+          a[o] = a[o+1];
+          a[o+1] = t;
+        }
       }
     }
+  need_bubble = false;
   }
 }
 
@@ -126,7 +133,7 @@ int readClock() {
   midiEventPacket_t rx;
   do {
     rx = MidiUSB.read();
-    if(rx.byte1 == 0xF8){
+    if(rx.byte1 == 0xF8){ //0xF8
        ++ppqn;
        if(ppqn == len_sample){    
           ppqn = 0;
@@ -136,11 +143,13 @@ int readClock() {
     }
     //Clock start byte
     else if(rx.byte1 == 0xFA){
+      play = true;
       ppqn = 0;
       playFirstNotes();
     }
     //Clock stop byte
     else if(rx.byte1 == 0xFC){
+      play = false;
       bufferPlay = 0;
       bubbleSort(samples,bufferRec);
     };

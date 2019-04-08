@@ -1,4 +1,3 @@
-
 #include "MIDIUSB.h"
 #include <SPI.h>
 #include "RF24.h"
@@ -130,6 +129,7 @@ void SendNoteOn(int note) {
     Buffer sampleOff = {note, layer, 0, fixed+6}; //Estoy hardcodeando el noteOff una semi después del on
     samples[bufferRec] = sampleOff;
     bufferRec++;
+    need_bubble = true;
   }
   noteOn(MIDI_CHANNEL,note,127);
 }
