@@ -1,3 +1,9 @@
+// CHECK CORRECT CE AND CS PIN CONFIGURATION 
+
+int CE_Pin = 5; // CAXIX HAND = 9; CAXIXI REVCEIVER = 5
+int CS_Pin = 6; // CAXIX HAND = 10; CAXIXI REVCEIVER = 6
+
+///EXAMPLE FROM TMRh20 nRF24L01+ LIBRARY
 
 /*
 * Getting Started example sketch for nRF24L01+ radios
@@ -13,7 +19,7 @@
 bool radioNumber = 1;
 
 /* Hardware configuration: Set up nRF24L01 radio on SPI bus plus pins 7 & 8 */
-RF24 radio(5,6);
+RF24 radio(CE_Pin,CS_Pin);
 /**********************************************************/
 
 byte addresses[][6] = {"1Node","2Node"};
