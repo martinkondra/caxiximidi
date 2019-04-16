@@ -442,19 +442,19 @@ void RecordStop() {
 }
 
 void Clear(){
-  bool record = false;
-  bool play = false;
-  bool isSetT0 = false;
-  bool isSetT1 = false;
-  bool FirstNote = false;
+  record = false;
+  play = false;
+  isSetT0 = false;
+  isSetT1 = false;
+  FirstNote = false;
   
-  long t0 = 0;            //cuando record==True, ajustamos una variable "t0" a esos msec y t = millis()-t0
-  long t1 = 0;            //cuando record == False, ajustamos una variable "t1", t1 = millis-t0
-  long reset = 0;        //y ajustamos la variable reset = millis - t0 - t1, que en principio va a ser cero, pero en cada vuelta va
-  
+  t0 = 0;            //cuando record==True, ajustamos una variable "t0" a esos msec y t = millis()-t0
+  t1 = 0;            //cuando record == False, ajustamos una variable "t1", t1 = millis-t0
+  reset = 0;        //y ajustamos la variable reset = millis - t0 - t1, que en principio va a ser cero, pero en cada vuelta va
+  layer = 0;
   Clear_Buffer(samples,bufferI);
-  int bufferI=0; //indice del buffer para record
-  int bufferJ=0; //indice del buffer para play
+  bufferI=0; //indice del buffer para record
+  bufferJ=0; //indice del buffer para play
 }
 
 void Clear_Buffer(Buffer a[], int bufferI) {
