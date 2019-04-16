@@ -1,5 +1,7 @@
 // Para programar la mano izquierda, poner CAXIXI_RIGHT en false, comentar el primer bloque y descomentar el segundo
 bool CAXIXI_RIGHT = true;
+
+///CAXIXI RIGHT NOTES
 const int CAXIXI_FORWARD_NOTEON = 111;
 const int CAXIXI_FORWARD_NOTEOFF = 110;
 const int CAXIXI_BACKWARD_NOTEON = 121;
@@ -7,13 +9,15 @@ const int CAXIXI_BACKWARD_NOTEOFF = 120;
 const int CAXIXI_HIT_NOTEON = 131;
 const int CAXIXI_HIT_NOTEOFF = 130;
 
-//const int CAXIXI_FORWARD_NOTEON = 211;
-//const int CAXIXI_FORWARD_NOTEOFF = 210;
-//const int CAXIXI_BACKWARD_NOTEON = 221;
-//const int CAXIXI_BACKWARD_NOTEOFF = 220;
-//const int CAXIXI_HIT_NOTEON = 231;
-//const int CAXIXI_HIT_NOTEOFF = 230;
-
+/*
+///CAXIXI LEFT NOTES
+const int CAXIXI_FORWARD_NOTEON = 211;
+const int CAXIXI_FORWARD_NOTEOFF = 210;
+const int CAXIXI_BACKWARD_NOTEON = 221;
+const int CAXIXI_BACKWARD_NOTEOFF = 220;
+const int CAXIXI_HIT_NOTEON = 231;
+const int CAXIXI_HIT_NOTEOFF = 230;
+*/
 
 const int CAXIXI_OCTAVE_UP = 401;
 const int CAXIXI_OCTAVE_DOWN = 400;
