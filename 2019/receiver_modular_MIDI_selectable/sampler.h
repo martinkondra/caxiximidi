@@ -66,14 +66,14 @@ void setT1(){ //Called by RecordStop()
 }
 
 void RecordStart() {
-  digitalWrite(RECORD_LED_PIN, LOW);
+  digitalWrite(RECORD_LED_PIN, 0);//Turn ON Record Led
   // This will trigger setT0 on first Note
   record=true;
   layer = layer + 1;
 }
 
 void RecordStop() {
-  analogWrite(RECORD_LED_PIN, LED_ON);
+  analogWrite(RECORD_LED_PIN, 255);//Turn OFF Record Led
   record=false;
   setT1();
 }
