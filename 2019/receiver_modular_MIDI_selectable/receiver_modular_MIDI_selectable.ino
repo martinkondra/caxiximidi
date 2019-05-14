@@ -38,7 +38,6 @@ boolean ended = false;
 int inInt;
 int ch;
 int num;
-int LED_ON = 230; //Se enciende un 10% el REC_LED indicando encendido
 ///RECEIVED MESSAGES
 int cxRightForwardNote = CAXIXI_RIGHT_NOTE_FORWARD;
 int cxRightBackwardNote = CAXIXI_RIGHT_NOTE_BACKWARD;
@@ -58,10 +57,10 @@ void setup() {
   pinMode(OCTAVE_DOWN_LED_RED_PIN, OUTPUT);
   pinMode(OCTAVE_DOWN_LED_GREEN_PIN, OUTPUT);
   analogWrite(OCTAVE_DOWN_LED_RED_PIN,255);
-  analogWrite(OCTAVE_DOWN_LED_GREEN_PIN, 255);
+  analogWrite(OCTAVE_DOWN_LED_GREEN_PIN, 0);
   analogWrite(OCTAVE_UP_LED_RED_PIN, 255);
-  analogWrite(OCTAVE_UP_LED_GREEN_PIN, 255);
-  analogWrite(RECORD_LED_PIN, LED_ON); 
+  analogWrite(OCTAVE_UP_LED_GREEN_PIN, 0);
+  analogWrite(RECORD_LED_PIN, 255); 
   delay(100);
   //MIDI.begin(1);  //Seleccionar en caso de MIDI Virtual
   Serial.begin(9600); 
