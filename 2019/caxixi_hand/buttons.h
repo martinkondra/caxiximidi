@@ -21,17 +21,8 @@ int octaveDownButtonState = 0;
 int currentOctave = 0;
 
 
-void SendToReceiver(int msg) {
-  radio.write( &msg, sizeof(int));
-}
 
-void SendNoteOn(int note) {
-  SendToReceiver(note);
-}
-
-void SendNoteOff(int note) {
-  SendToReceiver(note);
-}
+///MENSAJES EMITIDOS POR BOTONES
 
 void SendRecordStart() {
   SendToReceiver(CAXIXI_RECORD_START);
@@ -52,6 +43,10 @@ void SendOctaveDown(){
 void SendClear() {
   SendToReceiver(CAXIXI_SAMPLER_CLEAR);
 }
+
+
+
+
 
 void ButtonClear() {
   clearButtonState = digitalRead(SAMPLER_BUTTON_CLEAR_PIN);

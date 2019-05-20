@@ -21,6 +21,8 @@ RF24 radio(9,10); //Hardware configuration: Set up nRF24L01 radio on SPI bus plu
 byte addresses[][6] = {"1Node","2Node"};
 bool role = roleSET; // Used to control whether this node is sending or receiving
 
+#include "messageOut.h" ///Mensaje emitido por NRF o Serial Monitor (For Debug porpouse)
+
 boolean isUpThreshold, isDownThreshold, isUpThresholdRotated, isDownThresholdRotated;
 boolean canHit, canHitRotated;
 int currentAccelX, currentAccelY;
@@ -72,7 +74,7 @@ void setup() {
     pinMode(OCTAVE_DOWN_BUTTON_PIN, INPUT);
     pinMode(SAMPLER_BUTTON_CLEAR_PIN, INPUT);
   }
-  //Serial.begin(9600);
+  //Serial.begin(9600); ////Debug (no need in 32u4)
    radio.begin();
   // Set the PA Level low to prevent power supply related issues since this is a
   // getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
@@ -112,7 +114,7 @@ void setup() {
 int initialMillis;
 
 void loop() {
-  //initialMillis = millis();
+  //initialMillis = millis(); //Debug
   my3IMU.getValues(v);
   SensorRead[SENSOR_ACCEL_X] = (int)v[0];
   SensorRead[SENSOR_ACCEL_Y] = (int)v[1];
@@ -135,6 +137,9 @@ void loop() {
     }
   }
   delay(2);
-  //int diffMillis = millis() - initialMillis;
-  //Serial.println(diffMillis);
+  //int diffMillis = millis() - initialMillis;  //Debug
+  //Serial.println(diffMillis); //Debug
 }
+
+
+

@@ -1,7 +1,7 @@
 // CHECK CORRECT CE AND CS PIN CONFIGURATION 
 
-int CE_Pin = 9; // CAXIX HAND = 9; CAXIXI REVCEIVER = 5
-int CS_Pin = 10; // CAXIX HAND = 10; CAXIXI REVCEIVER = 6
+int CE_Pin = 7; // CAXIX HAND = 9; CAXIXI REVCEIVER = 5
+int CS_Pin = 8; // CAXIX HAND = 10; CAXIXI REVCEIVER = 6
 
 ///EXAMPLE FROM TMRh20 nRF24L01+ LIBRARY
 
@@ -50,6 +50,7 @@ void setup() {
   
   // Start the radio listening for data
   radio.startListening();
+  
 }
 
 void loop() {
@@ -108,7 +109,7 @@ if (role == 1)  {
   if ( role == 0 )
   {
     unsigned long got_time;
-    
+    //Serial.println("Estado 0");
     if( radio.available()){
                                                                     // Variable for the received timestamp
       while (radio.available()) {                                   // While there is data ready
@@ -121,6 +122,7 @@ if (role == 1)  {
       Serial.print(F("Sent response "));
       Serial.println(got_time);  
    }
+   //Serial.println("Estado 01");
  }
 
 
@@ -130,6 +132,8 @@ if (role == 1)  {
 
   if ( Serial.available() )
   {
+    //char c = Serial.parseInt();
+    Serial.println("MsjeDisponible");
     char c = toupper(Serial.read());
     if ( c == 'T' && role == 0 ){      
       Serial.println(F("*** CHANGING TO TRANSMIT ROLE -- PRESS 'R' TO SWITCH BACK"));

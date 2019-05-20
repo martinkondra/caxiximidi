@@ -74,7 +74,7 @@ void setAccelXForce() {
   }
 }
   
-void setState() {
+void setState() {////send NOTE HIT
   if(slopeStill == SLOPE_STILL_STATUS && accelXForce == FORCE_STILL){
     state = STATE_STILL;
   }else if(slopeStill == SLOPE_MOVING_STATUS && accelXForce == FORCE_FORWARD){
@@ -130,7 +130,11 @@ void runCaxixi() {
   setAccelXForce();
   prevState = state;
   setState();
-  //debug();
+  
+  //debug(); ///For Debug. Check debug.h para elegir info a debuguear
+ 
+
+ /////SEND HITS MESSAGES
   switch (noteOn) {
     case NOTE_FORWARD:
     if(noteReleaseForward()){
