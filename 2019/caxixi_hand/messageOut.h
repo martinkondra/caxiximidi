@@ -7,9 +7,6 @@ void SendToReceiver(int msg) {///Send msge NRF24
 }
 
 
-
-
-
 ////MENSAJES NOTES EMITIDOS
 ///MENSAJES HIT/NOTES
 void SendNoteOn(int note) {
@@ -23,6 +20,5 @@ void SendNoteOff(int note) {
 void SendCCM(int ccmProcessed){
 	SendToReceiver(ccmProcessed);	
 }
-
 
 //MENSAJES BOTONES

@@ -1,15 +1,24 @@
-Proyectos a realizar
+﻿Proyectos a realizar
 
 1) Luces:
 Encendido: las dos luces de octava en verde (octava 0), luz de rec apagada
 CCM mode: las dos luces de octava en rojo
 
-5) Bug en el CCM: Funciona como el orto
--Además, buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
+2) OCTAVAS EN CCM Buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
 
-6) Nuevas grabaciones: Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos.
+3) SENSOR MPU 6050 CALIB Y SENSITIVE 
+
+4) LIBRERIA CAXIXI Para que esten los .h de configuracion de pines o funciones dentro de una libreria
+
+6) Nuevas grabaciones (MIDICLOCK VERSION): Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos.
 Falta grabar los hits y decidir qué variables son de interés
 
-7) Generar gráficos automáticamente con matplotlib
+7) GRAFICOS DATOS Generar gráficos automáticamente con matplotlib 
 
-8) ClearAll & ClearLayer
+8) LAYERS  ClearAll & ClearLayer
+
+DONE 
+-Fix CCM
+-Add Debug via SerialMonitor Boolean configurable en CaxixiConfig.h
+
+

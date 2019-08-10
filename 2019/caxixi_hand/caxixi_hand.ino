@@ -1,9 +1,9 @@
-#include <MS561101BA.h>
+#include <MS561101BA.h> //chequear que no se utiliza
 #include <I2Cdev.h>
-#include <MPU60X0.h>
+#include <MPU60X0.h>  //No se necesita declarar aparte porque viene incluida en FreeIMU.h adaptado para MPU6050
 #include <EEPROM.h>
 #include "DebugUtils.h"
-#include "FreeIMU.h"
+#include "FreeIMU.h" ///Usando aun libreria FREIMU, actualmente con AccScale en 16. Ver MPU60X0.cpp para cambiar la Scale +- 16,8,4 o 2g
 #include <Wire.h>
 #include <SPI.h>
 #include "RF24.h"
@@ -14,23 +14,19 @@
 int powerpin = 5;
 
 //CAXIXI NRF24 CONFIG
-int roleSET = 1; //Set the Role 0 receiver or 1 sender right or 2 sender left
+RF24 radio(9,10); //Hardware configuration: Set up nRF24L01 (CE- ; CSN+)radio on SPI bus plus pins 9 & 10 (for Hand), 5 & 6 (for CX Receiver) */
+////
+int roleSET = 1; //Set the Role 0 receiver or 1 sender right or #CHECK ?¿ 2 sender Second Pair- Caxixi x4 Hand and feet?¿
 int radioNumber = roleSET;
-RF24 radio(9,10); //Hardware configuration: Set up nRF24L01 radio on SPI bus plus pins 7 & 8 */
-
 byte addresses[][6] = {"1Node","2Node"};
 bool role = roleSET; // Used to control whether this node is sending or receiving
+////END OF CAXIXI NRF24 CONFIG
 
 #include "messageOut.h" ///Mensaje emitido por NRF o Serial Monitor (For Debug porpouse)
-
-boolean isUpThreshold, isDownThreshold, isUpThresholdRotated, isDownThresholdRotated;
-boolean canHit, canHitRotated;
-int currentAccelX, currentAccelY;
-int slopeStill;
-int accelXForce;
-int prevState;
-
 #include "CaxixiConfig.h"
+
+//boolean isUpThreshold, isDownThreshold, isUpThresholdRotated, isDownThresholdRotated;//YA NO SE UTILIZA
+//boolean canHit, canHitRotated;//YA NO SE UTILIZA
 
 int state = STATE_STILL;
 bool wantCCM = false;
@@ -39,30 +35,38 @@ CxCircularBuffer accelXBuffer(BUFFER_SIZE);
 CxCircularBuffer accelYBuffer(BUFFER_SIZE);
 boolean bufferReady = false;
 
+int currentAccelX, currentAccelY;
+int slopeStill;
+int accelXForce;
+int prevState;
 int accelXSmooth[filterSamples];
 int accelYSmooth[filterSamples];
 int smoothAccelX;
 int smoothAccelY;
-
-int SensorRead[6] = {0, 0, 0, 0, 0, 0};
+int initialMillis;
 
 int NoteRelease[3] = {
   NOTE_RELEASE_FORWARD,
   NOTE_RELEASE_BACKWARD,
   NOTE_RELEASE_HIT
 };
-
-int noteThresholdHit = NOTE_THRESHOLD_HIT;
-int canHitDefinition = 1;
-
 int noteOn = NOTE_OFF;
 
+//Data from MPU 6050 BY FREEIMU
+int SensorRead[6] = {0, 0, 0, 0, 0, 0};
 float v[6];
 float angles[3];
 FreeIMU my3IMU = FreeIMU();
 
+//int noteThresholdHit = NOTE_THRESHOLD_HIT;///CHECKEAR QUE YA NO SE UTILIZA
+//int canHitDefinition = 1;///CHECKEAR QUE YA NO SE UTILIZA
+
+////Nueva logica de hit basada en evitar el ghost hit
+//bool canHitUp = true;
+//bool canHitDown = true;
+
 #include "buttons.h"
-#include "Caxixi.h"
+#include "Caxixi.h"//Incluye al "debug.h"
 #include "CCM.h"
 
 void setup() {
@@ -74,8 +78,10 @@ void setup() {
     pinMode(OCTAVE_DOWN_BUTTON_PIN, INPUT);
     pinMode(SAMPLER_BUTTON_CLEAR_PIN, INPUT);
   }
+  //FOR DEBUG
   //Serial.begin(9600); ////Debug (no need in 32u4)
-   radio.begin();
+  //COMMUNICATION NRF24 
+  radio.begin();
   // Set the PA Level low to prevent power supply related issues since this is a
   // getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
   radio.setPALevel(RF24_PA_LOW);
@@ -94,11 +100,13 @@ void setup() {
     radio.openWritingPipe(addresses[2]);
     }
     delay(10);
+    ////SENSOR CONNECTION
     Wire.begin(); //Fix to powerOn battery ArduinoProMini
     Wire.beginTransmission(0x68);
     Wire.write(0x6B);  // PWR_MGMT_1 register
     Wire.write(0);     // set to zero (wakes up the MPU-6050)
     Wire.endTransmission(true); 
+    ///BUFFERS
     accelXBuffer.clear();
     accelYBuffer.clear();
     delay(500);
@@ -106,12 +114,10 @@ void setup() {
     GyroYBuffer.clear();
     GyroZBuffer.clear();
     delay(5);
+    //INCIO LIBRERIA DEL IMU
     my3IMU.init();
-    //Serial.begin(9600);//PARA DEBUG, NO NECESARIO EN FEATHER 32U4
     delay(50);
 }
-
-int initialMillis;
 
 void loop() {
   //initialMillis = millis(); //Debug

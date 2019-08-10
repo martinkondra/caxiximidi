@@ -130,11 +130,13 @@ void runCaxixi() {
   setAccelXForce();
   prevState = state;
   setState();
-  
-  //debug(); ///For Debug. Check debug.h para elegir info a debuguear
- 
 
- /////SEND HITS MESSAGES
+  ////Serial Monitor Debug SET IN Caxixiconfig.h
+  if (debugSerialMonitor = true){
+    debug();///For Debug Caxixi /// Check debug.h para elegir info a debuguear
+  }
+
+  /////SEND HITS MESSAGES
   switch (noteOn) {
     case NOTE_FORWARD:
     if(noteReleaseForward()){
@@ -165,7 +167,7 @@ void runCaxixi() {
     noteOn = NOTE_BACKWARD;
     SendNoteOn(CAXIXI_BACKWARD_NOTEON);
   }
-  if(noteOn == NOTE_OFF && currentAccelY > noteThresholdHit){
+  if(noteOn == NOTE_OFF && currentAccelY > NOTE_THRESHOLD_HIT){
     noteOn = NOTE_HIT;
     SendNoteOn(CAXIXI_HIT_NOTEON);
   }
