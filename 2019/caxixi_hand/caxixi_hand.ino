@@ -1,4 +1,3 @@
-#include <MS561101BA.h> //chequear que no se utiliza
 #include <I2Cdev.h>
 #include <MPU60X0.h>  //No se necesita declarar aparte porque viene incluida en FreeIMU.h adaptado para MPU6050
 #include <EEPROM.h>

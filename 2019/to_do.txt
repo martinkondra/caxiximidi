@@ -1,10 +1,9 @@
 ﻿Proyectos a realizar
 
-1) Luces:
+1) SUSPENDIDO - NO HACER Luces:
 Encendido: las dos luces de octava en verde (octava 0), luz de rec apagada
 CCM mode: las dos luces de octava en rojo
 
-2) OCTAVAS EN CCM Buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
 
 3) SENSOR MPU 6050 CALIB Y SENSITIVE 
 
@@ -20,5 +19,6 @@ Falta grabar los hits y decidir qué variables son de interés
 DONE 
 -Fix CCM
 -Add Debug via SerialMonitor Boolean configurable en CaxixiConfig.h
-
+- CCM OCTAVAS EN CCM Buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
+- CCM Se agrega la posibilidad de elegir el funcionamiento de la nota en el HIT eje Y. HOLD (Activa/Desactiva) o Classic HIT 
 

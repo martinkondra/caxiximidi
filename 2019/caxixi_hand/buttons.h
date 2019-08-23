@@ -63,19 +63,14 @@ void ButtonOctaveDown() {
   if (octaveDownButtonState != octaveDownButtonLastState) {
     if (octaveDownButtonState == HIGH){
       firstTime = millis();
-      if (!wantCCM) {
-        //currentOctave = currentOctave-1; 
-        SendOctaveDown();
+    }else{//Se decidira que hacer cuando se despresione el boton
+      millis_held = (millis() - firstTime);//calculate time held
+      if(millis_held > longPressThreshold){//Boton presion larga
+        wantCCM = !wantCCM;
+      }else{//boton presion corta
+        SendOctaveDown(); 
       }
     }
-        millis_held = (millis() - firstTime);
-    if (octaveDownButtonState == LOW && millis_held > longPressThreshold) {
-        //Serial.print("\nChange wantCCM");
-        if (!wantCCM) {
-        SendOctaveUp(); //Revisar, para compensar el octaveUp indeseado del if anterior
-        }
-        wantCCM = !wantCCM;
-      }  
     octaveDownButtonLastState = octaveDownButtonState;
   }
 }
@@ -98,22 +93,18 @@ void ButtonRecord() {
 
 void ButtonOctaveUp() {
   octaveUpButtonState = digitalRead(OCTAVE_UP_BUTTON_PIN);
+
   if (octaveUpButtonState != octaveUpButtonLastState) {
     if (octaveUpButtonState == HIGH){
       firstTime = millis();
-      if (!wantCCM) {
-        //currentOctave = currentOctave+1; 
-        SendOctaveUp();
+    }else{//Se decidira que hacer cuando se despresione el boton
+      millis_held = (millis() - firstTime);//calculate time held
+      if(millis_held > longPressThreshold){//Boton presion larga
+        wantCCM = !wantCCM;
+      }else{//boton presion corta
+        SendOctaveUp(); 
       }
     }
-    millis_held = (millis() - firstTime);
-    if (octaveUpButtonState == LOW && millis_held > longPressThreshold) {
-        //Serial.print("\nChange wantCCM");
-        if (!wantCCM) {
-        SendOctaveDown(); //Revisar, para compensar el octaveUp indeseado del if anterior
-        }
-        wantCCM = !wantCCM;
-      }      
     octaveUpButtonLastState = octaveUpButtonState;
   }
 }

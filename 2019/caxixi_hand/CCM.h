@@ -1,8 +1,19 @@
+///CCM Config . Configurar tipo de funcionamiento. (Ej:Nota hold si o no)
+bool NotaHOLD = true; ///true cuando se quiere prender o apagar la nota con cada hit
 //Variables Threshold
-int NoteThresholdCCM = 2000; //Umbral para mandar midiOn/Off
-int NoteReleaseCCM = 1000;
+int CCM_NOTE_THRESHOLD_HIT = 2000; //Umbral para mandar midiOn/Off
+int CCM_HOLDING_NOTE_THRESHOLD_HIT = 4000;
+int CCM_NOTE_RELEASE = 1000;
 int rollMovingThreshold = 5; //DIFERENCIA ABSOLUTA GYROBUFFER Threshold XYZ 
 ////////////////////////////
+//Format CCM Message
+int msg; //msg to send 
+int formatCCM(int NUM, int CH) {
+  msg = CH*1000 + NUM;
+  return msg;
+}
+///End of Format CCM Message
+
 bool CCMbufferReady = false;
 CxCircularBuffer GyroXBuffer(BUFFER_SIZE);
 CxCircularBuffer GyroYBuffer(BUFFER_SIZE);
@@ -13,9 +24,10 @@ int GyroYSmooth[filterSamples];
 int smoothGyroY;
 int GyroZSmooth[filterSamples];
 int smoothGyroZ;
-int msg; //msg to send
-bool NoteState = true;
-bool Bloqueo = false;
+
+////STATES 
+bool Hit_State = false; // (Begin out of hit, expecting Hit) Usar para saber cuando se puede enviar notas. On en Hit Lapsus hasta ReleaseHit
+bool HitCCM_NoteOn = false; // NoteOn State
  
 boolean isRollingX;
 String debugRollingX;
@@ -51,24 +63,46 @@ boolean isCCMBufferReady(){
 }
 
 /////CAXIXI CCM HITS
+//NEW ccmNotes()
 void ccmNotes() {
-  if (currentAccelY > NoteThresholdCCM & (!Bloqueo)){
-    if (NoteState){
+  if(!NotaHOLD){//MODO CLASIC HIT EN EJE Y
+    //Hit_State, if inside Hit Lapsus before HitReleased
+   
+    ////SEND NOTE ON
+    if (currentAccelY > CCM_NOTE_THRESHOLD_HIT & HitCCM_NoteOn == false){ //Encima del umbral CCM & Out of Hit Lapsus
        SendToReceiver(CAXIXI_HIT_NOTEON);
-       NoteState = false;
-       Bloqueo = true;
-       }
-    else{
+       //SendNoteOn(CAXIXI_HIT_NOTEON);
+       HitCCM_NoteOn = true;
+    }
+    ///SEND NOTE OFF
+    if (currentAccelY < CCM_NOTE_RELEASE & HitCCM_NoteOn == true){ //Cada situacion ReleaseHit habilita el envio de notas via NoteState
       SendToReceiver(CAXIXI_HIT_NOTEOFF);
-      NoteState = true;
-      Bloqueo = true;
+      //SendNoteOff(CAXIXI_HIT_NOTEOFF);
+      HitCCM_NoteOn = false;
+    }
+  
+  }else{//NotaHOLD True //THRESHOLD diferente (mas alto)
+    //Hit_State = true inside Hit Lapsus before relaesed. Se usa para saber cuando se puede enviar una nota sea On u Off
+    //HitCCM_NoteOn para cuando esta la nota prendida
+    if (currentAccelY > CCM_HOLDING_NOTE_THRESHOLD_HIT & Hit_State == false){
+      if (!HitCCM_NoteOn){ //If its OFF send NoteOn
+        SendToReceiver(CAXIXI_HIT_NOTEON);
+        //SendNoteOn(CAXIXI_HIT_NOTEON);
+        Hit_State = true;
+        HitCCM_NoteOn = true;
+      }else{
+        SendToReceiver(CAXIXI_HIT_NOTEOFF);
+        //SendNoteOff(CAXIXI_HIT_NOTEOFF);
+        Hit_State = true;
+        HitCCM_NoteOn = false;
       }
     }
-  if (currentAccelY < NoteReleaseCCM){
-    Bloqueo = false;
+    if (currentAccelY < CCM_NOTE_RELEASE & Hit_State == true){//Cada situacion ReleaseHit habilita el envio de notas via NoteState (Hit Lapsus)
+      Hit_State = false;
     }
-} 
-/////END OF CCM HITS
+  }
+}  
+/////END OF ccmNotes()
 
 /////Check Movement GYRO
 void setIsRollingX(){
@@ -113,14 +147,6 @@ void setIsRollingZ(){
     isRollingZ = false; }
 }
 
-int formatCCM(int NUM, int CH) {
-  msg = CH*1000 + NUM;
-  return msg;
-}
-
-
-
-
 void areRolling() {
   setIsRollingX();
   setIsRollingY();
@@ -129,7 +155,7 @@ void areRolling() {
 ///END OF Check Movement GYRO
 
 
-///ProcessCCM  (send ccm if moving)
+/////ProcessCCM  (send ccm if moving)
 //class Solution maybe?
 //Wrong accel "name" x->z, y->x, z->y (YawPitchRoll)
 void processX() {
@@ -143,7 +169,6 @@ void processX() {
   //SendToReceiver(formatCCM(x,15));
   delay(2);
 }
-
 void processY() {
   int y, controlvalueY;
   controlvalueY = GyroYBuffer.getPreviousElement(1);      
@@ -153,7 +178,6 @@ void processY() {
   //SendToReceiver(formatCCM(y,16));//CHECK 
   delay(2);
 }
-
 void processZ() {
   int z, controlvalueZ;
   controlvalueZ = GyroZBuffer.getPreviousElement(1);
@@ -178,9 +202,8 @@ void ProcessCCM() {
 /////END CCM Messagge (send ccm if moving)
 
 
-////CAXIXI CCM PROGRAM
-void runCCM() {
-  
+////CAXIXI CCM runCCM()
+void runCCM() { 
   if(caxixiRight){
     currentAccelY = accelYBuffer.getPreviousElement(1);
     currentAccelX = accelXBuffer.getPreviousElement(1);
@@ -198,3 +221,4 @@ void runCCM() {
   //Debug
   //Serial.println();
   }
+///
