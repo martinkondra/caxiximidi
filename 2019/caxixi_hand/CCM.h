@@ -1,3 +1,8 @@
+//Variables Threshold
+int NoteThresholdCCM = 2000; //Umbral para mandar midiOn/Off
+int NoteReleaseCCM = 1000;
+int rollMovingThreshold = 5; //DIFERENCIA ABSOLUTA GYROBUFFER Threshold XYZ 
+////////////////////////////
 bool CCMbufferReady = false;
 CxCircularBuffer GyroXBuffer(BUFFER_SIZE);
 CxCircularBuffer GyroYBuffer(BUFFER_SIZE);
@@ -8,16 +13,10 @@ int GyroYSmooth[filterSamples];
 int smoothGyroY;
 int GyroZSmooth[filterSamples];
 int smoothGyroZ;
+int msg; //msg to send
 bool NoteState = true;
-int NoteThresholdCCM = 2000; //Umbral para mandar midiOn/Off
-int NoteReleaseCCM = 1000;
 bool Bloqueo = false;
-int msg; //msg to send 
-
-
-int rollMovingThreshold = 5; //DIFERENCIA ABSOLUTA GYROBUFFER Threshold XYZ 
-
-
+ 
 boolean isRollingX;
 String debugRollingX;
 //int isRollingXVariation = 5;  //Threshold X
@@ -51,8 +50,6 @@ boolean isCCMBufferReady(){
   }
 }
 
-
-
 /////CAXIXI CCM HITS
 void ccmNotes() {
   if (currentAccelY > NoteThresholdCCM & (!Bloqueo)){
@@ -72,7 +69,6 @@ void ccmNotes() {
     }
 } 
 /////END OF CCM HITS
-
 
 /////Check Movement GYRO
 void setIsRollingX(){
@@ -119,7 +115,7 @@ void setIsRollingZ(){
 
 int formatCCM(int NUM, int CH) {
   msg = CH*1000 + NUM;
-  return msg;//check if redundante
+  return msg;
 }
 
 
@@ -184,20 +180,16 @@ void ProcessCCM() {
 
 ////CAXIXI CCM PROGRAM
 void runCCM() {
-
-   if(caxixiRight){
-      ButtonOctaveUp();
-     } else {
-      ButtonOctaveDown();
-      }
-
+  
   if(caxixiRight){
     currentAccelY = accelYBuffer.getPreviousElement(1);
     currentAccelX = accelXBuffer.getPreviousElement(1);
-    } else {
+    ButtonOctaveUp();
+  } else {
     currentAccelY = - accelYBuffer.getPreviousElement(1);
     currentAccelX = accelXBuffer.getPreviousElement(1);
-    }
+    ButtonOctaveDown();
+  }
 
   ccmNotes();//SEND Caxixi CCM Notes 
   areRolling(); //check if Gyro Moving
