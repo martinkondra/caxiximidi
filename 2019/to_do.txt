@@ -17,13 +17,14 @@ Falta grabar los hits y decidir qué variables son de interés
 
 *) GRAFICOS DATOS Generar gráficos automáticamente con matplotlib 
 
+*) SUSPENDIDO - NO HACER Luces:
+Encendido: las dos luces de octava en verde (octava 0), luz de rec apagada
+CCM mode: las dos luces de octava en rojo
+
 DONE 
 -Fix CCM
 -Add Debug via SerialMonitor Boolean configurable en CaxixiConfig.h
 - CCM OCTAVAS EN CCM Buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
 - CCM Se agrega la posibilidad de elegir el funcionamiento de la nota en el HIT eje Y. HOLD (Activa/Desactiva) o Classic HIT 
+- CCM REC Y CLEAR Se mantienen funcionando los botones de REC y CLEAR en CCM mode
 
-
-*) SUSPENDIDO - NO HACER Luces:
-Encendido: las dos luces de octava en verde (octava 0), luz de rec apagada
-CCM mode: las dos luces de octava en rojo

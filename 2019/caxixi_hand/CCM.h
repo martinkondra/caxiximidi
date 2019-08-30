@@ -6,6 +6,7 @@ int CCM_HOLDING_NOTE_THRESHOLD_HIT = 4000;
 int CCM_NOTE_RELEASE = 1000;
 int rollMovingThreshold = 5; //DIFERENCIA ABSOLUTA GYROBUFFER Threshold XYZ 
 ////////////////////////////
+
 //Format CCM Message
 int msg; //msg to send 
 int formatCCM(int NUM, int CH) {
@@ -31,13 +32,10 @@ bool HitCCM_NoteOn = false; // NoteOn State
  
 boolean isRollingX;
 String debugRollingX;
-//int isRollingXVariation = 5;  //Threshold X
 boolean isRollingY;
 String debugRollingY;
-//int isRollingYVariation = 5;  //Threshold Y
 boolean isRollingZ;
 String debugRollingZ;
-//int isRollingZVariation = 5;  //Threshold Z
 
 void setCircularBufferCCM(){
   smoothAccelY = digitalSmooth(SensorRead[SENSOR_ACCEL_Y], accelYSmooth);
@@ -70,14 +68,12 @@ void ccmNotes() {
    
     ////SEND NOTE ON
     if (currentAccelY > CCM_NOTE_THRESHOLD_HIT & HitCCM_NoteOn == false){ //Encima del umbral CCM & Out of Hit Lapsus
-       SendToReceiver(CAXIXI_HIT_NOTEON);
-       //SendNoteOn(CAXIXI_HIT_NOTEON);
+       SendNoteOn(CAXIXI_HIT_NOTEON);
        HitCCM_NoteOn = true;
     }
     ///SEND NOTE OFF
     if (currentAccelY < CCM_NOTE_RELEASE & HitCCM_NoteOn == true){ //Cada situacion ReleaseHit habilita el envio de notas via NoteState
-      SendToReceiver(CAXIXI_HIT_NOTEOFF);
-      //SendNoteOff(CAXIXI_HIT_NOTEOFF);
+      SendNoteOff(CAXIXI_HIT_NOTEOFF);
       HitCCM_NoteOn = false;
     }
   
@@ -86,13 +82,11 @@ void ccmNotes() {
     //HitCCM_NoteOn para cuando esta la nota prendida
     if (currentAccelY > CCM_HOLDING_NOTE_THRESHOLD_HIT & Hit_State == false){
       if (!HitCCM_NoteOn){ //If its OFF send NoteOn
-        SendToReceiver(CAXIXI_HIT_NOTEON);
-        //SendNoteOn(CAXIXI_HIT_NOTEON);
+        SendNoteOn(CAXIXI_HIT_NOTEON);
         Hit_State = true;
         HitCCM_NoteOn = true;
       }else{
-        SendToReceiver(CAXIXI_HIT_NOTEOFF);
-        //SendNoteOff(CAXIXI_HIT_NOTEOFF);
+        SendNoteOff(CAXIXI_HIT_NOTEOFF);
         Hit_State = true;
         HitCCM_NoteOn = false;
       }
@@ -156,7 +150,6 @@ void areRolling() {
 
 
 /////ProcessCCM  (send ccm if moving)
-//class Solution maybe?
 //Wrong accel "name" x->z, y->x, z->y (YawPitchRoll)
 void processX() {
   int x, controlvalueX;
@@ -190,13 +183,13 @@ void processZ() {
 
 void ProcessCCM() {
   if(isRollingX){
-    processX();///EMITE CCM MAPEADO
+    processX();///EMITE CCM MAPEADO 360º (0-127)
     }
   if(isRollingY){
-    processY();///EMITE CCM MAPEADO
+    processY();///EMITE CCM MAPEADO 360º (0-127)
     }
   if(isRollingZ){
-    processZ();///EMITE CCM MAPEADO
+    processZ();///EMITE CCM MAPEADO 360º (0-127)
     }
 }
 /////END CCM Messagge (send ccm if moving)
@@ -208,17 +201,17 @@ void runCCM() {
     currentAccelY = accelYBuffer.getPreviousElement(1);
     currentAccelX = accelXBuffer.getPreviousElement(1);
     ButtonOctaveUp();
+    ButtonRecord(); //CHEQUEAR SI FUNCIONA
   } else {
     currentAccelY = - accelYBuffer.getPreviousElement(1);
     currentAccelX = accelXBuffer.getPreviousElement(1);
     ButtonOctaveDown();
+    ButtonClear(); //CHEQUEAR SI FUNCIONA
   }
 
   ccmNotes();//SEND Caxixi CCM Notes 
   areRolling(); //check if Gyro Moving
-  ProcessCCM(); //send ccm if moving
+  ProcessCCM(); //send ccm if moving maped 360º (0-127)
 
-  //Debug
-  //Serial.println();
-  }
+}
 ///
