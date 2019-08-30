@@ -1,4 +1,4 @@
-// incluir la fc debug() en el loop de runCaxixi() (después de setState()) e importar debug.h antes del loop
+// Incluida en el loop de runCaxixi() (después de setState()) e importar debug.h antes del loop
 int prevMillis = 0;
 int currentMillis = 0;
 
@@ -11,31 +11,6 @@ void SendToDebug(int msg) {
   Serial.print(msg);
   Serial.print(";");
 }
-
-
-////for midi in debug?
-int readClock() {
-  midiEventPacket_t rx;
-  do {
-    rx = MidiUSB.read();
-    if(rx.byte1 == 0xF8){
-       ++ppqn;
-       if(ppqn == 24){     
-          ppqn = 0;
-       };
-    }
-    else if(rx.byte1 == 0xFA) { //Clock start byte
-      ppqn = 0;
-    }
-    else if(rx.byte1 == 0xFC) { //Clock stop byte
-      ppqn = 0;
-    };
-  } while (rx.header != 0);
-  return ppqn;
-}
-
-
-
 
 void debug() {
   //SendToDebug(readClock());

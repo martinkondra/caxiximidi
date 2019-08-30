@@ -1,32 +1,32 @@
+//SENSOR LIBRERIAS
 #include <I2Cdev.h>
 #include <MPU60X0.h>  //No se necesita declarar aparte porque viene incluida en FreeIMU.h adaptado para MPU6050
 #include <EEPROM.h>
 #include "DebugUtils.h"
 #include "FreeIMU.h" ///Usando aun libreria FREIMU, actualmente con AccScale en 16. Ver MPU60X0.cpp para cambiar la Scale +- 16,8,4 o 2g
 #include <Wire.h>
+#include "CommunicationUtils.h"//FREEIMU- CHECKEAR para que se utiliza
+///CHEQUEAR (1-Wire.h Repetido 2-Si se puede sacar en Feather23u4 y otras )
+#include <Wire.h> // For proMini Boards //Solucion para inicializacion de sensor en promini + battery + switch on/off
+#include <avr/power.h> // For proMini Boards //Solucion para inicializacion de sensor en promini + battery + switch on/off
+int powerpin = 5; // For proMini Boards //Solucion para inicializacion de sensor en promini + battery + switch on/off
+
+//LIBRERIAS COMUNICACION
+//CAXIXI NRF24 CONFIG
 #include <SPI.h>
 #include "RF24.h"
-#include "CommunicationUtils.h"
-#include <Wire.h>
-#include "CxCircularBuffer.h"
-#include <avr/power.h> // For proMini Boards
-int powerpin = 5;
-
-//CAXIXI NRF24 CONFIG
-RF24 radio(9,10); //Hardware configuration: Set up nRF24L01 (CE- ; CSN+)radio on SPI bus plus pins 9 & 10 (for Hand), 5 & 6 (for CX Receiver) */
-////
+RF24 radio(9,10); //Hardware configuration: Set up nRF24L01 (CE- ; CSN+)radio on SPI bus plus pins 9 & 10 (for Hand), 5 & 6 (for CX Receiver) 
 int roleSET = 1; //Set the Role 0 receiver or 1 sender right or #CHECK ?¿ 2 sender Second Pair- Caxixi x4 Hand and feet?¿
 int radioNumber = roleSET;
 byte addresses[][6] = {"1Node","2Node"};
 bool role = roleSET; // Used to control whether this node is sending or receiving
 ////END OF CAXIXI NRF24 CONFIG
 
+//CAXIXI LIBRERIAS Y OBJETOS PRPIOS
+#include "CxCircularBuffer.h"
 #include "messageOut.h" ///Mensaje emitido por NRF o Serial Monitor (For Debug porpouse)
 #include "CaxixiConfig.h"
-
-//boolean isUpThreshold, isDownThreshold, isUpThresholdRotated, isDownThresholdRotated;//YA NO SE UTILIZA
-//boolean canHit, canHitRotated;//YA NO SE UTILIZA
-
+///Atributos usados 
 int state = STATE_STILL;
 bool wantCCM = false;
 bool caxixiRight = CAXIXI_RIGHT;
@@ -57,16 +57,23 @@ float v[6];
 float angles[3];
 FreeIMU my3IMU = FreeIMU();
 
+
+//Logicas hit antiguas
+//1
+//boolean isUpThreshold, isDownThreshold, isUpThresholdRotated, isDownThresholdRotated;//YA NO SE UTILIZA
+//boolean canHit, canHitRotated;//YA NO SE UTILIZA
+//2
 //int noteThresholdHit = NOTE_THRESHOLD_HIT;///CHECKEAR QUE YA NO SE UTILIZA
 //int canHitDefinition = 1;///CHECKEAR QUE YA NO SE UTILIZA
-
+//3
 ////Nueva logica de hit basada en evitar el ghost hit
 //bool canHitUp = true;
 //bool canHitDown = true;
-
+#include "debugCaxixi.h" //Usado en Caxixi.h aun
 #include "buttons.h"
-#include "Caxixi.h"//Incluye al "debug.h"
+#include "Caxixi.h"//QUITAR Incluye al "debug.h"
 #include "CCM.h"
+
 
 void setup() {
   analogWrite(13,150);

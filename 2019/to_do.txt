@@ -1,20 +1,21 @@
 ﻿Proyectos a realizar
 
-1) SUSPENDIDO - NO HACER Luces:
-Encendido: las dos luces de octava en verde (octava 0), luz de rec apagada
-CCM mode: las dos luces de octava en rojo
+*EMI*) SENSOR MPU 6050 CALIB Y SENSITIVE vs FREEIMU
 
+*EMI*)CHEQUEAR LIBRERIAS UTILIZADAS {
+			-WIRE.H REPETIDO
+			-Pro mini power on issue
+			-
+		}
 
-3) SENSOR MPU 6050 CALIB Y SENSITIVE 
+*) LAYERS  ClearAll & ClearLayer
 
-4) LIBRERIA CAXIXI Para que esten los .h de configuracion de pines o funciones dentro de una libreria
+*) ?? LIBRERIA CAXIXI Para que esten los .h de configuracion de pines o funciones dentro de una libreria
 
-6) Nuevas grabaciones (MIDICLOCK VERSION): Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos.
+*) Nuevas grabaciones (MIDICLOCK VERSION): Usando midi clock, poder hacer grabaciones a la vez que grabamos el metrónomo, de modo de saber en qué parte de la curva están los pulsos.
 Falta grabar los hits y decidir qué variables son de interés
 
-7) GRAFICOS DATOS Generar gráficos automáticamente con matplotlib 
-
-8) LAYERS  ClearAll & ClearLayer
+*) GRAFICOS DATOS Generar gráficos automáticamente con matplotlib 
 
 DONE 
 -Fix CCM
@@ -22,3 +23,7 @@ DONE
 - CCM OCTAVAS EN CCM Buscar que sigan funcionando los botones de 8vas (ya que la otra mano sigue siendo caxixi)
 - CCM Se agrega la posibilidad de elegir el funcionamiento de la nota en el HIT eje Y. HOLD (Activa/Desactiva) o Classic HIT 
 
+
+*) SUSPENDIDO - NO HACER Luces:
+Encendido: las dos luces de octava en verde (octava 0), luz de rec apagada
+CCM mode: las dos luces de octava en rojo

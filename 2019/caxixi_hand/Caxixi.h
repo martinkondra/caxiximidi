@@ -1,4 +1,4 @@
-#include "debug.h"
+
 
 int digitalSmooth(int rawIn, int *sensSmoothArray) {
   int j, k, temp, top, bottom;

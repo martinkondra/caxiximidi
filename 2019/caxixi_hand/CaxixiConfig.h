@@ -1,6 +1,6 @@
 // Para programar la mano izquierda, poner CAXIXI_RIGHT en false, comentar el primer bloque y descomentar el segundo
 bool CAXIXI_RIGHT = false;
-bool debugSerialMonitor = false;///For Debug (via SerialMonitor in debug.h 
+bool debugSerialMonitor = false; ///For Debug (via SerialMonitor in debugCaxixi.h corriendo Caixi.h)
 /*
 ///CAXIXI RIGHT NOTES
 const int CAXIXI_FORWARD_NOTEON = 111;
