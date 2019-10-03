@@ -1,6 +1,8 @@
 // VERSION RECEIVER MODULAR
 /// SAMPLER OLD SCHOOLL -> Corte de loop en Inicio de sample
 //// MIDI SELECCIONABLE -> Seleccionar librerias y funciones de envio de notas segun corresponda
+///// FOR CCM OCTAVES, check SplitCCM() 
+
 
 //// -MIDI- (SELECT)
 
@@ -134,6 +136,7 @@ void loop() {
 
 void SplitCCM(int inInt){
     ch = inInt/1000;
+    //ch = ch + currentOctave * 6;//Unncomment if want to have Octaves in CCM control numbers //SELECT
     num = inInt - ch*1000;
 }
 
@@ -272,4 +275,3 @@ void PlayBuffer() { //MIDI VIRTUAL VERSION
 }
 */
 ////FIN OPCION 2 VIRTUAL MIDI PORT/////////
-

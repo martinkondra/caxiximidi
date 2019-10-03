@@ -7,6 +7,7 @@ int CCM_NOTE_RELEASE = 1000;
 int rollMovingThreshold = 5; //DIFERENCIA ABSOLUTA GYROBUFFER Threshold XYZ 
 ////////////////////////////
 
+
 //Format CCM Message
 int msg; //msg to send 
 int formatCCM(int NUM, int CH) {
@@ -98,6 +99,20 @@ void ccmNotes() {
 }  
 /////END OF ccmNotes()
 
+//CAXIXI CCM Control Changes
+//Define CCM numbers 
+void defCMMnumbers(){
+  if (!CAXIXI_RIGHT){
+    xccm = CAXIXI_CCM_X;
+    yccm = CAXIXI_CCM_Y;
+    zccm = CAXIXI_CCM_Z;
+  }else{
+    xccm = CAXIXI_CCM_X + 3;
+    yccm = CAXIXI_CCM_Y + 3;
+    zccm = CAXIXI_CCM_Z + 3;
+    }
+}
+
 /////Check Movement GYRO
 void setIsRollingX(){
   int currentValue = GyroXBuffer.getPreviousElement(1);
@@ -157,7 +172,7 @@ void processX() {
   if(controlvalueX>180){
      controlvalueX = 180;}      
   x = map(controlvalueX, 0, 180, 0, 127); // scale to midi range
-  int ccmProcessed = formatCCM(x,15); ///Yaw
+  int ccmProcessed = formatCCM(x,xccm); ///Yaw
   SendCCM(ccmProcessed); //CHECK 
   //SendToReceiver(formatCCM(x,15));
   delay(2);
@@ -166,7 +181,7 @@ void processY() {
   int y, controlvalueY;
   controlvalueY = GyroYBuffer.getPreviousElement(1);      
   y = map(controlvalueY, -90, 90, 0, 127); 
-  int ccmProcessed = formatCCM(y,16);//Pitch
+  int ccmProcessed = formatCCM(y,yccm);//Pitch
   SendCCM(ccmProcessed);
   //SendToReceiver(formatCCM(y,16));//CHECK 
   delay(2);
@@ -175,7 +190,7 @@ void processZ() {
   int z, controlvalueZ;
   controlvalueZ = GyroZBuffer.getPreviousElement(1);
   z = map(controlvalueZ, -90, 90, 0, 127); 
-  int ccmProcessed = formatCCM(z,17);//Roll
+  int ccmProcessed = formatCCM(z,zccm);//Roll
   SendCCM(ccmProcessed);
   //SendToReceiver(formatCCM(z,17));//CHECK 
   delay(2);

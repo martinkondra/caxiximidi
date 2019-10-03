@@ -1,6 +1,8 @@
+bool debugSerialMonitor = false; ///For Debug (via SerialMonitor in debugCaxixi.h corriendo Caixi.h)
+
 // Para programar la mano izquierda, poner CAXIXI_RIGHT en false, comentar el primer bloque y descomentar el segundo
 bool CAXIXI_RIGHT = false;
-bool debugSerialMonitor = false; ///For Debug (via SerialMonitor in debugCaxixi.h corriendo Caixi.h)
+
 /*
 ///CAXIXI RIGHT NOTES
 const int CAXIXI_FORWARD_NOTEON = 111;
@@ -9,7 +11,7 @@ const int CAXIXI_BACKWARD_NOTEON = 121;
 const int CAXIXI_BACKWARD_NOTEOFF = 120;
 const int CAXIXI_HIT_NOTEON = 131;
 const int CAXIXI_HIT_NOTEOFF = 130;
-*/
+///*/
 
 ///CAXIXI LEFT NOTES
 const int CAXIXI_FORWARD_NOTEON = 211;
@@ -18,6 +20,7 @@ const int CAXIXI_BACKWARD_NOTEON = 221;
 const int CAXIXI_BACKWARD_NOTEOFF = 220;
 const int CAXIXI_HIT_NOTEON = 231;
 const int CAXIXI_HIT_NOTEOFF = 230;
+////////
 
 const int CAXIXI_OCTAVE_UP = 401;
 const int CAXIXI_OCTAVE_DOWN = 400;
@@ -101,6 +104,11 @@ const int RESOLUTION = 1;
 #define CAXIXI_LEFT_NOTE_FORWARD 36
 #define CAXIXI_LEFT_NOTE_BACKWARD 38
 #define CAXIXI_LEFT_NOTE_HIT 40
+///MIDI CCM CONTROL NUMBERS
+const int CAXIXI_CCM_X = 13; //19  to have full 7 octaves
+const int CAXIXI_CCM_Y = 14; //20  to have full 7 octaves
+const int CAXIXI_CCM_Z = 15; //21  to have full 7 octaves
+
 
 //Buffer en Receiver
 struct Buffer_s {

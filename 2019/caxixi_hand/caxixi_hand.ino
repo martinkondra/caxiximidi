@@ -22,7 +22,7 @@ byte addresses[][6] = {"1Node","2Node"};
 bool role = roleSET; // Used to control whether this node is sending or receiving
 ////END OF CAXIXI NRF24 CONFIG
 
-//CAXIXI LIBRERIAS Y OBJETOS PRPIOS
+//CAXIXI LIBRERIAS Y OBJETOS PROPIOS
 #include "CxCircularBuffer.h"
 #include "messageOut.h" ///Mensaje emitido por NRF o Serial Monitor (For Debug porpouse)
 #include "CaxixiConfig.h"
@@ -50,6 +50,9 @@ int NoteRelease[3] = {
   NOTE_RELEASE_HIT
 };
 int noteOn = NOTE_OFF;
+
+///CCM Control numbers
+int xccm, yccm, zccm;
 
 //Data from MPU 6050 BY FREEIMU
 int SensorRead[6] = {0, 0, 0, 0, 0, 0};
@@ -122,6 +125,7 @@ void setup() {
     delay(5);
     //INCIO LIBRERIA DEL IMU
     my3IMU.init();
+    defCMMnumbers();///Definir los Control changes usados segun right or left
     delay(50);
 }
 
@@ -152,6 +156,3 @@ void loop() {
   //int diffMillis = millis() - initialMillis;  //Debug
   //Serial.println(diffMillis); //Debug
 }
-
-
-
