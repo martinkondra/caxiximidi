@@ -1,6 +1,7 @@
 //SENSOR LIBRERIAS
 #include <I2Cdev.h>
 #include <MPU60X0.h>  //No se necesita declarar aparte porque viene incluida en FreeIMU.h adaptado para MPU6050
+
 #include <EEPROM.h>
 #include "DebugUtils.h"
 #include "FreeIMU.h" ///Usando aun libreria FREIMU, actualmente con AccScale en 16. Ver MPU60X0.cpp para cambiar la Scale +- 16,8,4 o 2g
@@ -56,10 +57,11 @@ int xccm, yccm, zccm;
 
 //Data from MPU 6050 BY FREEIMU
 int SensorRead[6] = {0, 0, 0, 0, 0, 0};
-float v[6];
+//float v[6];
 float angles[3];
 FreeIMU my3IMU = FreeIMU();
-
+//accgyro es el nombre que tiene en FREEIMU el objetc MPU-60X0
+int ax, ay, az;
 
 //Logicas hit antiguas
 //1
@@ -133,11 +135,15 @@ void setup() {
 
 void loop() {
   //initialMillis = millis(); //Debug
-  my3IMU.getValues(v);
-  
-  SensorRead[SENSOR_ACCEL_X] = (int)v[0];
-  SensorRead[SENSOR_ACCEL_Y] = (int)v[1];
-  SensorRead[SENSOR_ACCEL_Z] = (int)v[2];
+//  my3IMU.getValues(v);
+//  SensorRead[SENSOR_ACCEL_X] = (int)v[0];
+//  SensorRead[SENSOR_ACCEL_Y] = (int)v[1];
+//  SensorRead[SENSOR_ACCEL_Z] = (int)v[2];
+
+  my3IMU.accgyro.getAcceleration(&ax, &ay, &az);
+  SensorRead[SENSOR_ACCEL_X] = (int) ax;
+  SensorRead[SENSOR_ACCEL_Y] = (int) ay;
+  SensorRead[SENSOR_ACCEL_Z] = (int) az;
 
   if(wantCCM){      
     my3IMU.getYawPitchRoll(angles);
