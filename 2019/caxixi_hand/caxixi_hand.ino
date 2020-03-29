@@ -109,6 +109,7 @@ void setup() {
     radio.openWritingPipe(addresses[2]);
     }
     delay(10);
+    
     ////SENSOR CONNECTION
     Wire.begin(); //Fix to powerOn battery ArduinoProMini
     Wire.beginTransmission(0x68);
@@ -123,6 +124,7 @@ void setup() {
     GyroYBuffer.clear();
     GyroZBuffer.clear();
     delay(5);
+    
     //INCIO LIBRERIA DEL IMU
     my3IMU.init();
     defCMMnumbers();///Definir los Control changes usados segun right or left
@@ -132,6 +134,7 @@ void setup() {
 void loop() {
   //initialMillis = millis(); //Debug
   my3IMU.getValues(v);
+  
   SensorRead[SENSOR_ACCEL_X] = (int)v[0];
   SensorRead[SENSOR_ACCEL_Y] = (int)v[1];
   SensorRead[SENSOR_ACCEL_Z] = (int)v[2];
